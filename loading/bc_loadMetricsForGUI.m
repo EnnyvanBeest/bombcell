@@ -24,7 +24,7 @@ if exist('spikeTimes_samples','var')
     ephysData.template_amplitudes = templateAmplitudes;
     ephysData.channel_positions = channelPositions;
 
-else % load in unit match data 
+else % load in unit match data
     if iscell(sp)
         ephysData.spike_times_samples = sp{countid}.st(idx)*sp{countid}.sample_rate;
         ephysData.ephys_sample_rate = sp{countid}.sample_rate;

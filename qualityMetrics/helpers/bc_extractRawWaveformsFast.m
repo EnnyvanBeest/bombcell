@@ -128,7 +128,8 @@ else
             for bid = 1:nBatch
                 spkId = (bid-1)*BatchSize+(1:BatchSize);
                 spkId(spkId>nSpkLocal) = []; 
-                tmpspkmap(:,:,spkId) = smoothdata(double(tmpspkmap(:,:,spkId)),1,'gaussian',5);%smooth first
+
+                tmpspkmap(:,:,spkId) = smoothdata(double(tmpspkmap(:,:,spkId)),1,'gaussian',5); % smooth first
                 tmpspkmap(:,:,spkId) = tmpspkmap(:,:,spkId) - mean(tmpspkmap(1:param.waveformBaselineNoiseWindow,:,spkId),1); % Subtract baseline 
             end
             % Save two averages for UnitMatch

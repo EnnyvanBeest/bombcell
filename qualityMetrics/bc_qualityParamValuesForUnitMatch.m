@@ -1,8 +1,11 @@
 function paramBC = bc_qualityParamValuesForUnitMatch(ephysMetaDir, rawFile, ephysKilosortPath, gain_to_uV, kilosortVersion)
 paramBC = struct;
+
+
 if nargin < 5 
     kilosortVersion = 4; 
 end
+
 %% calculating quality metrics parameters 
 % plotting parameters 
 paramBC.plotDetails = 0; % generates a lot of plots, 
@@ -52,7 +55,8 @@ paramBC.probeType = 1; % if you are using spikeGLX and your meta file does
     % information.  If your spikeGLX meta file contains information about your probe
     % type, or if you are using open ephys, this paramater wil be ignored.
 
-    if kilosortVersion == 4
+% signal to noise ratio
+if kilosortVersion == 4
     paramBC.waveformBaselineNoiseWindow = 10; %time in samples at beginning of times
         % extracted to computer the mean raw waveform - this needs to be before the
         % waveform starts 
@@ -84,7 +88,7 @@ paramBC.computeDrift = 0; % whether to compute each units drift. this is a
 % waveform parameters
 if kilosortVersion == 4
     paramBC.waveformBaselineWindowStart = 1;
-    paramBC.waveformBaselineWindowStop = 10; % in samples 
+    paramBC.waveformBaselineWindowStop = 11; % in samples 
 else
     paramBC.waveformBaselineWindowStart = 20;
     paramBC.waveformBaselineWindowStop = 30; % in samples 
@@ -94,6 +98,8 @@ paramBC.firstPeakRatio = 1.1; % if units have an initial peak before the trough,
 
 % in a units waveform to give the minimum prominence to detect peaks using
 % matlab's findpeaks function.
+paramBC.firstPeakRatio = 1.1; % if units have an initial peak before the trough,
+
 
 % recording parametrs
 paramBC.ephys_sample_rate = 30000; % samples per second
