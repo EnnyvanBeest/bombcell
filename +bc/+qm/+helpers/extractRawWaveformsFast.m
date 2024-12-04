@@ -195,10 +195,20 @@ if param.extractRaw
 
     %% estimate signal-to-noise ratio
     unique_clus = unique(spikeClusters);
-    if ~isempty(fullfile(savePath, 'templates._bc_baselineNoiseAmplitude.npy'))
+    if ~isempty(dir(fullfile(savePath, 'templates._bc_baselineNoiseAmplitude_kilosort_format.npy')))
 
         average_baseline_cat = readNPY(fullfile(savePath, 'templates._bc_baselineNoiseAmplitude_kilosort_format.npy'));
         average_baseline_idx_cat = readNPY(fullfile(savePath, 'templates._bc_baselineNoiseAmplitudeIndex_kilosort_format.npy'));
+
+        % signal to nosie ratio (Enny van Beest)
+        signalToNoiseRatio = cell2mat(arrayfun(@(X) ...
+            max(abs(squeeze(rawWaveformsFull(X, rawWaveformsPeakChan(X), :))))./ ...
+            mad(average_baseline_cat(average_baseline_idx_cat == X)), ...
+            unique_clus, 'Uni', false));
+    elseif ~isempty(dir(fullfile(savePath, 'templates._bc_baselineNoiseAmplitude.npy')))
+
+        average_baseline_cat = readNPY(fullfile(savePath, 'templates._bc_baselineNoiseAmplitude.npy'));
+        average_baseline_idx_cat = readNPY(fullfile(savePath, 'templates._bc_baselineNoiseAmplitudeIndex.npy'));
 
         % signal to nosie ratio (Enny van Beest)
         signalToNoiseRatio = cell2mat(arrayfun(@(X) ...

@@ -171,7 +171,7 @@ if param.splitGoodAndMua_NonSomatic
     end
 
     UpSet_data_muaNonSoma = UpSet_data_muaNonSoma(ismember(unitType, [3, 4]), :); %Keep only non-somatic MUA and single units - remove noise and somatic
-    if sum(UpSet_data_muaNonsoma, 'all') > 0
+    if sum(UpSet_data_muaNonSoma, 'all') > 0
         bc.viz.upSetPlot(UpSet_data_muaNonSoma, UpSet_labels_muaNonSoma, figHandle_muaNonSoma, darker_yellow_orange_colors);
         hold on;
         sgtitle('Units classified as non-somatic & MUA');

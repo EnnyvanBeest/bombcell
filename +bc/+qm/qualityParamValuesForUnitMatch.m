@@ -35,7 +35,7 @@ paramBC.saveSpikes_withoutDuplicates = 1;
 paramBC.recomputeDuplicateSpikes = 0;
 
 % amplitude parameters
-paramBC.detrendWaveform = 0; % If this is set to 1, each raw extracted spike is
+paramBC.detrendWaveform = 1; % If this is set to 1, each raw extracted spike is
     % detrended (we remove the best straight-fit line from the spike)
     % using MATLAB's builtin function detrend. 
 paramBC.nRawSpikesToExtract = 1000;%inf; %inf if you don't encounter memory issues and want to load all spikes; % how many raw spikes to extract for each unit 
@@ -54,6 +54,7 @@ paramBC.probeType = 1; % if you are using spikeGLX and your meta file does
     % For additional probe types, make a pull request with more
     % information.  If your spikeGLX meta file contains information about your probe
     % type, or if you are using open ephys, this paramater wil be ignored.
+paramBC.computeSpatialDecay = 1;
 
 % signal to noise ratio
 if kilosortVersion == 4
@@ -71,12 +72,13 @@ paramBC.tauR_valuesMin = 2/1000; % refractory period time (s), usually 0.0020 ch
 paramBC.tauR_valuesStep = 0.5/1000; % refractory period time (s), usually 0.0020
 paramBC.tauR_valuesMax = 2/1000; % refractory period time (s), usually 0.0020
 paramBC.tauC = 0.1/1000; % censored period time (s)
-paramBC.hillOrLlobetMethod = 1; % 1 to use Hill et al method; 0 to use Llobet et al method
+paramBC.hillOrLlobetMethod = 1; %% 1 to use Hill et al method; 0 to use Llobet et al method
+
 
 % percentage spikes missing parameters 
-paramBC.computeTimeChunks = 0; % compute fraction refractory period violations 
-% and percent sp[ikes missing for different time chunks 
-paramBC.deltaTimeChunk = 360; %time in seconds 
+paramBC.computeTimeChunks = 1; % compute fraction refractory period violations 
+% and percent spikes missing for different time chunks 
+paramBC.deltaTimeChunk = 600; %time in seconds 
 
 % presence ratio 
 paramBC.presenceRatioBinSize = 60; % in seconds 
@@ -98,6 +100,8 @@ paramBC.minThreshDetectPeaksTroughs = 0.2; % this is multiplied by the max value
 paramBC.normalizeSpDecay = 1; % whether to normalize spatial decay points relative to 
 % maximum - this makes the spatrial decay slop calculation more invariant to the 
 % spike-sorting algorithm used
+paramBC.spDecayLinFit = 0; % if false, use an exponential fit
+
 
 % recording parametrs
 paramBC.ephys_sample_rate = 30000; % samples per second
@@ -128,28 +132,23 @@ paramBC.nChannelsIsoDist = 4; % number of nearby channels to use in distance met
 
 
 %% classifying units into good/mua/noise parameters 
-paramBC.minAmplitude = 20; 
-paramBC.maxRPVviolations = 0.1; % fraction
-paramBC.maxPercSpikesMissing = 20; % Percentage
-paramBC.minNumSpikes = 300;
 
-paramBC.maxDrift = 100;
-paramBC.minPresenceRatio = 0.7;
-paramBC.minSNR = 0.1;
+% split good and mua non-somatic
+paramBC.splitGoodAndMua_NonSomatic = 1;
 
 %waveform 
 paramBC.maxNPeaks = 2;
 paramBC.maxNTroughs = 1;
 paramBC.somatic = 1; 
 paramBC.minWvDuration = 100; % in us
-paramBC.maxWvDuration = 800; % in us
+paramBC.maxWvDuration = 1150; % in us
 paramBC.minSpatialDecaySlope = -0.005;
-paramBC.maxWvBaselineFraction = 0.3;
 paramBC.minSpatialDecaySlopeExp = 0.01; % in a.u./um
-paramBC.maxSpatialDecaySlopeExp = 0.1; % in a.u./um
+paramBC.maxSpatialDecaySlopeExp = 0.3; % in a.u./um
+paramBC.maxWvBaselineFraction = 0.3;
+paramBC.minTroughToPeakRatio = 0.8; % peak must be less
 paramBC.firstPeakRatio = 3; % if units have an initial peak before the trough,
     % it must be at least firstPeakRatio times larger than the peak after the trough to qualify as a non-somatic unit. 
-paramBC.minTroughToPeakRatio = 0.9; % peak must be less
 paramBC.minWidthFirstPeak = 4; % in samples
 paramBC.minMainPeakToTroughRatio = 5; % trough should be min 5 x bigger than 1rst peak to count as non-somatic 
 paramBC.minWidthMainTrough = 5; % in samples
@@ -160,8 +159,17 @@ paramBC.isoDmin = 20;
 paramBC.lratioMax = 0.1;
 paramBC.ssMin = NaN; 
 
-% split good and mua non-somatic
-paramBC.splitGoodAndMua_NonSomatic = 1;
+paramBC.minAmplitude = 20; 
+paramBC.maxRPVviolations = 0.3; % fraction
+paramBC.maxPercSpikesMissing = 20; % Percentage
+paramBC.minNumSpikes = 300;
+
+paramBC.maxDrift = 100;
+paramBC.minPresenceRatio = 0.7;
+paramBC.minSNR = 0.1;
+
+
+
 
 end
 % %bc_qualityParamValues
