@@ -177,7 +177,7 @@ param.ssMin = NaN; % minimum silhouette score
 
 % other classification params
 param.minAmplitude = 20; % in uV
-param.maxRPVviolations = 0.1; % fraction
+param.maxRPVviolations = 0.3; % fraction
 param.maxPercSpikesMissing = 20; % in percentage
 param.minNumSpikes = 300; % number of spikes
 param.maxDrift = 100; % in micrometers 
